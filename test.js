@@ -90,7 +90,12 @@ const getBalance = async (wallet) => {
     return await wallet.getBalance();
 };
 
-filterList = ["0x042fef60ad51f48c65e6106f9b950178910a3300", "0x455fd3ae52a8ab80f319a1bf912457aa8296695a", "0x745f0a7f065857670af71fc827e4557c64e679c9", "0x503514046121103d66337a867e23c19be8617b30", "0x4ee2acf64a2c0db6a1da0a4b534b08f036d0da41"];
+const whitelist = [
+    NULL_ADDRESS,
+    '0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad', '0x1111111254EEB25477B68fb85Ed929f73A960582', '0xe37e799d5077682fa0a244d46e5649f71457bd09', '0x111111125421ca6dc452d289314280a0f8842a65', '0x455fd3ae52a8ab80f319a1bf912457aa8296695a', '0x4ee2acf64a2c0db6a1da0a4b534b08f036d0da41',
+    '0x042fef60ad51f48c65e6106f9b950178910a3300', '0x745f0a7f065857670af71fc827e4557c64e679c9',
+    '0x503514046121103d66337a867e23c19be8617b30', '0x536801aae40cb214c08f178c6727d7594a7c655b'
+]
 
 const readAddressesFromCSV = (filePath) => {
     return new Promise((resolve, reject) => {
@@ -101,8 +106,8 @@ const readAddressesFromCSV = (filePath) => {
                 addresses.push(row.HolderAddress);
             })
             .on('end', () => {
-                const filteredAddresses = addresses.filter(address => !filterList.includes(address));
-                resolve(filteredAddresses.slice(0, 270));
+                const filteredAddresses = addresses.filter(address => !whitelist.includes(address));
+                resolve(filteredAddresses.slice(0, 225));
             })
             .on('error', reject);
     });
@@ -119,7 +124,6 @@ const usdThreshold = 0.4;
 const debaseAddresses = async () => {
 
     const newAddresses = await readAddressesFromCSV('holders.csv');
-    console.log(newAddresses);
 
     // If the addresses differ, clear the transferAddresses
     if (newAddresses.some((address, index) => address !== addresses[index])) {
@@ -199,8 +203,8 @@ const debaseAddresses = async () => {
         const end = new Date();
         const timeTaken = end - start;
         // wait 6 seconds before the next iteration
-        if (timeTaken < 6000) {
-            await new Promise((resolve) => setTimeout(resolve, 6000 - timeTaken));
+        if (timeTaken < 7000) {
+            await new Promise((resolve) => setTimeout(resolve, 7000 - timeTaken));
         }
         else {
             console.error(`Time taken: ${timeTaken}ms`);
@@ -214,9 +218,8 @@ const debaseUser = async (user) => {
     const baseFee = block.baseFeePerGas;
     const gasPrice = baseFee.mul(110).div(100);
 
-    const currentTime = new Date();
     try {
-        await tokenContract2.callStatic.debase(user, {
+        await tokenContract2.debase(user, {
             gasPrice: gasPrice,
         });
         console.log(`Debase transaction successful for ${user}.`);
@@ -231,8 +234,6 @@ const debaseUser = async (user) => {
         }
         console.error(`Error: ${errorMessage} - ${user} at ${getTimeStamp()}`);
     }
-    const endTime = new Date();
-    console.log(`Time taken: ${endTime - currentTime}ms`);
 };
 
-debaseUser("0xde1765eb87cbaf807458c7ccb100134de1b57396")
+debaseUser("0x24703554B1B6F73eE7C6fF545F64352726FaA183")
