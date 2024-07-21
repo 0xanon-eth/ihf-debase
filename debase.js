@@ -246,7 +246,7 @@ tokenContract2.on('Transfer', (from, to, value) => {
     // if target is not the null address
     if (!whitelist.includes(to) && valueInEther > 0.4) {
         console.log(`Transfer detected. From: ${from}, To: ${to}, Value: ${valueInEther} tokens`);
-        if (!addresses.includes(to) && !transferAddresses.includes(to)) {
+        if (!addresses.includes(to) && !transferAddresses.includes(to) && !whitelist.includes(to)) {
             // print all addresses that are being tracked
             console.log(`Adding ${to} to transferAddresses`);
             transferAddresses.push(to);
