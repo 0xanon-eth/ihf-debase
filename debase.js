@@ -106,7 +106,7 @@ const readAddressesFromCSV = (filePath) => {
                 addresses.push(row.HolderAddress);
             })
             .on('end', () => {
-                const filteredAddresses = addresses.filter(address => !whitelist.includes(address));
+                const filteredAddresses = addresses.filter(address => !whitelist.includes(address.toLowerCase()));
                 resolve(filteredAddresses.slice(0, 225));
             })
             .on('error', reject);
