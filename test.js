@@ -232,8 +232,9 @@ const debaseUser = async (user) => {
         } else {
             errorMessage = "Unexpected error structure";
         }
+        console.log(error)
         console.error(`Error: ${errorMessage} - ${user} at ${getTimeStamp()}`);
     }
 };
 
-debaseUser("0x24703554B1B6F73eE7C6fF545F64352726FaA183")
+debaseUser("0x503514046121103d66337a867e23c19be8617b30")
