@@ -120,7 +120,7 @@ const fetchEthPrice = async () => {
     return data.ethereum.usd;
 };
 
-const usdThreshold = 0.4;
+const usdThreshold = 0.35;
 
 const debaseAddresses = async () => {
 
