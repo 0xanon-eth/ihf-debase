@@ -108,7 +108,7 @@ const readAddressesFromCSV = (filePath) => {
             })
             .on('end', () => {
                 const filteredAddresses = addresses.filter(address => !whitelist.includes(address.toLowerCase()));
-                resolve(filteredAddresses.slice(0, 100));
+                resolve(filteredAddresses.slice(0, 50));
             })
             .on('error', reject);
     });
@@ -143,7 +143,7 @@ const debaseAddresses = async () => {
     let firstSuccessful = false;
     let block = await provider.getBlock("latest");
     let baseFee = block.baseFeePerGas;
-    let gasPrice = baseFee.mul(110).div(100);
+    let gasPrice = baseFee.mul(107).div(100);
     let amount = 0;
     let maxAddresses = addresses.length;
 
@@ -217,7 +217,7 @@ const debaseAddresses = async () => {
 const debaseUser = async (user) => {
     const block = await provider.getBlock("latest");
     const baseFee = block.baseFeePerGas;
-    const gasPrice = baseFee.mul(110).div(100);
+    const gasPrice = baseFee.mul(107).div(100);
 
     try {
         await tokenContract2.debase(user, {
